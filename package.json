@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "test": "jest"
+    },
+    "globals": {
+        "window": {}
+    },
+    "devDependencies": {},
+    "dependencies": {}
+}

@@ -43,13 +43,10 @@ function Donor(
 // We'll create a donatedBooks array to store all donated books entry into our localStorage, and retrieve them when necessary
 var donatedBooks = [];
 
-// Define a Donate constructor to implement the functions required to submit donated books
-function Donate() {}
-
 // Add a new book to the donatedBooks array in the localStorage
 var numberOfDonatedBooks = 0;
 
-Donate.prototype.add = function (donor, book) {
+function addDonatedBooksToLocalStorage(donor, book) {
   console.log("Adding book to donatedBooks array in localStorage");
 
   let donation = { ...donor, ...book };
@@ -65,17 +62,24 @@ Donate.prototype.add = function (donor, book) {
   }
 
   numberOfDonatedBooks = numberOfDonatedBooks + 1;
-};
+
+  return 1;
+}
 
 // Clears the donateForm inputs after successfully adding the data
-Donate.prototype.clear = function () {
+function clearDonateForm() {
   let donateForm = document.getElementById("donateForm");
   donateForm.reset();
-};
+}
 
 // Add submit event listener to donateForm
 let donateForm = document.getElementById("donateForm");
-donateForm.addEventListener("submit", donateFormSubmit);
+
+if (donateForm != null) {
+  donateForm.addEventListener("submit", donateFormSubmit);
+}
+
+module.exports = { addDonatedBooksToLocalStorage };
 
 function donateFormSubmit(e) {
   console.log("You have submitted donate form");
@@ -134,9 +138,6 @@ function donateFormSubmit(e) {
 
   console.log(book);
 
-  // Once we got all the information required, we can begin adding the donation request to our localStorage
-  let donate = new Donate();
-
   if (
     title &&
     author &&
@@ -146,8 +147,8 @@ function donateFormSubmit(e) {
     description &&
     donationMethod
   ) {
-    donate.add(donor, book);
-    donate.clear();
+    addDonatedBooksToLocalStorage(donor, book);
+    clearDonateForm();
     console.log(localStorage.getItem("donatedBooks"));
   } else {
     // Show error to the user
